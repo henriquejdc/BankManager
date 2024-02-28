@@ -1,0 +1,41 @@
+version: '3.7'
+
+services:
+  postgresql:
+    container_name: postgresql
+    image: postgres:14.4-alpine
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${password_default}
+      - POSTGRES_DB=${DB_NAME}
+    ports:
+      - target: 5433
+        published: 5433
+    volumes:
+      - ./volumes/postgresql_data:/var/lib/postgresql/data/
+    env_file:
+      - .env
+
+  django:
+    build:
+      context: .
+      dockerfile: Dockerfile-postgresql
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./django:/bank_manager
+    command: >
+      sh -c "
+        python manage.py collectstatic --noinput &&
+        python manage.py migrate &&
+        python manage.py test --failfast manager authentication &&
+        coverage run --source='./manager' manage.py test &&
+        coverage report &&
+        coverage html &&
+        python manage.py runserver 0.0.0.0:8000
+      "
+    user: root
+    env_file:
+      - .env
+    environment:
+      - DB_HOST=postgresql

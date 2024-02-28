@@ -1,0 +1,24 @@
+version: '3.7'
+
+services:
+  django:
+    build:
+      context: .
+      dockerfile: Dockerfile-sqlite
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./django:/bank_manager
+    command: >
+      sh -c "
+        python manage.py collectstatic --noinput &&
+        python manage.py migrate &&
+        python manage.py test --failfast manager authentication &&
+        coverage run --source='./manager' manage.py test &&
+        coverage report &&
+        coverage html &&
+        python manage.py runserver 0.0.0.0:8000
+      "
+    user: root
+    env_file:
+      - .env

@@ -1,0 +1,16 @@
+# If you use SQLite, you can use the following settings
+SECRET_KEY=123@key
+DEBUG=False
+ENVIRONMENT_MODE=prod
+DB_ENGINE=django.db.backends.sqlite3
+
+# If you use PostgreSQL, you can use the following settings
+SECRET_KEY=123@key
+DEBUG=False
+ENVIRONMENT_MODE=prod
+DB_ENGINE=django.db.backends.postgresql
+DB_NAME=vl_database
+DB_USER=user_default
+DB_PASSWORD=password_default
+DB_HOST=localhost
+DB_PORT=5432
