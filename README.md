@@ -43,7 +43,7 @@ O endpoint "/conta" deve criar e fornecer informações sobre o número da conta
     }
     ```  
 
-- **GET /v1/conta/?id=123** retorna o saldo da conta
+- **GET /v1/conta/?id=123 ou /v1/conta/?conta_id=123** retorna o saldo da conta
     **Exemplo:**
     ```
     {
