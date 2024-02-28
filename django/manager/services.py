@@ -8,7 +8,7 @@ from manager.models import Account, Transaction
 
 def create_transaction(data: Dict) -> Tuple[bool, Account or None]:
     """
-    Create a transaction and process balance in accont
+    Create a transaction and process balance in account
     """
     account = Account.objects.get(id=data.get('conta_id'))
     tax = 0  # default tax pix
@@ -31,7 +31,7 @@ def create_transaction(data: Dict) -> Tuple[bool, Account or None]:
         account=account,
         value=data.get('valor'),
         type=data.get('forma_pagamento'),
-        tax=data.get('valor')*tax
+        tax=data.get('valor') * tax
     )
 
     return True, account

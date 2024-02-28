@@ -51,6 +51,6 @@ class TransactionSerializer(serializers.Serializer):
             Check conta_id exists
         """
         if not Account.objects.filter(id=conta_id).exists():
-            raise serializers.ValidationError({"conta_id": "Conta com conta_id não existe!"})
+            raise serializers.ValidationError("Conta com conta_id não existe!")
 
         return conta_id

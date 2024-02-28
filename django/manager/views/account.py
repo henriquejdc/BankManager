@@ -41,8 +41,10 @@ class AccountViewSet(BaseCollectionViewSet):
         try:
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
+
             if Account.objects.filter(id=serializer.validated_data.get('conta_id')):
                 return Response({'conta_id': 'Conta já existente!'}, status=status.HTTP_400_BAD_REQUEST)
+
             account = Account.objects.create(
                 id=serializer.validated_data.get('conta_id'),
                 balance=serializer.validated_data.get('valor')
@@ -52,11 +54,3 @@ class AccountViewSet(BaseCollectionViewSet):
 
         except RestFrameworkValidationError as validation_exception:
             return api_exception_response(exception=validation_exception)
-        except IntegrityError as validation_exception:
-            return api_exception_response(
-                exception=validation_exception,
-                http_status=status.HTTP_400_BAD_REQUEST
-            )
-        except Exception as exception:
-            return api_exception_response(exception=exception)
-

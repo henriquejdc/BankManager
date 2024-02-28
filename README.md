@@ -15,6 +15,13 @@ Criado os objetos em banco relacional **(PostgreSQL/SQLite)**:
 - value
 - tax
 
+Taxas:
+
+**Taxa de débito:** 3% sobre a operação
+
+**Taxa de crédito:** 5% sobre a operação
+
+**Taxa do Pix:** Sem custo
 
 Criado o app manager e o viewsets com os endpoints:
 
@@ -53,12 +60,11 @@ O endpoint "/conta" deve criar e fornecer informações sobre o número da conta
 
 O endpoint "/transacao" será responsável por realizar diversas operações financeiras.
 
-
 - **POST /v1/transacao/** cria uma transação conforme o tipo de pagamento, gera taxa e retorna o saldo da conta
     **Exemplo:**
     ```
     {
-        "forma_pagamento": "D", 
+        "forma_pagamento": "P", 
         "conta_id": 123, 
         "valor":10
     }

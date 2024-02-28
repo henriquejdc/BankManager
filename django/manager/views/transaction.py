@@ -48,10 +48,3 @@ class TransactionViewSet(BaseCollectionViewSet):
 
         except RestFrameworkValidationError as validation_exception:
             return api_exception_response(exception=validation_exception)
-        except IntegrityError as validation_exception:
-            return api_exception_response(
-                exception=validation_exception,
-                http_status=status.HTTP_400_BAD_REQUEST
-            )
-        except Exception as exception:
-            return api_exception_response(exception=exception)
