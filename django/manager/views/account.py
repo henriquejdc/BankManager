@@ -1,6 +1,5 @@
 # Django imports
 import django_filters.rest_framework
-from django.db import IntegrityError
 from drf_yasg.utils import swagger_auto_schema
 
 # Third party imports
@@ -54,3 +53,20 @@ class AccountViewSet(BaseCollectionViewSet):
 
         except RestFrameworkValidationError as validation_exception:
             return api_exception_response(exception=validation_exception)
+
+    @swagger_auto_schema(operation_summary="List objects")
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        response_data = serializer.data
+
+        if request.GET.get('conta_id') or request.GET.get('id'):
+            return Response(response_data[0] if len(response_data) else {})
+
+        return Response(response_data)
