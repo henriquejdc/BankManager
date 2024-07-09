@@ -167,3 +167,33 @@ if 'test' in sys.argv or 'test_coverage' in sys.argv:  # Covers regular testing 
     ENVIRONMENT_MODE = 'unit'
     DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
     LANGUAGE_CODE = 'en-US'
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+            'LOCATION': 'unique-snowflake',  # Um nome único para o cache
+        }
+    }
+
+else:
+    # Cache configuration
+    # Define cache settings using Django with Redis as the backend.
+    CACHES = {
+        'default': {
+            'BACKEND': 'django_redis.cache.RedisCache',  # Backend to use Redis as the cache.
+            'LOCATION': config("REDIS_HOST"),  # Connection URL to the Redis server.
+            'OPTIONS': {
+                'CLIENT_CLASS': 'django_redis.client.DefaultClient',  # Django's default client class for Redis.
+            }
+        }
+    }
+
+    # Define the session engine to use the cache.
+    SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+
+    # Define the cache alias to be used for storing sessions.
+    SESSION_CACHE_ALIAS = "default"
+
+    # Define the default time-to-live (TTL) for cached data in seconds (60 seconds = 1 minute).
+    CACHE_TTL = 60 * 1
+
+    REDIS_CACHE_KEY_PREFIX = config('REDIS_CACHE_KEY_PREFIX')

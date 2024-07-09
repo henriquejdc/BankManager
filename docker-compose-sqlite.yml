@@ -24,6 +24,7 @@ services:
       - .env
     depends_on:
       - rabbitmq
+      - redis
 
   celery:
     build:
@@ -39,6 +40,7 @@ services:
     depends_on:
       - django
       - rabbitmq
+      - redis
 
   rabbitmq:
     image: rabbitmq
@@ -48,3 +50,8 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"

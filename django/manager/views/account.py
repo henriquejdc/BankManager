@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 
 # Project imports
+from manager.cache_utils import set_cache, get_cache
 from manager.filters import AccountFilter
 from manager.models import Account
 from manager.serializers import AccountSerializer, AccountCreateSerializer
@@ -41,8 +42,13 @@ class AccountViewSet(BaseCollectionViewSet):
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
 
+            if cached_data := get_cache(f'account_{serializer.validated_data.get("conta_id")}'):
+                return Response(cached_data, status=status.HTTP_400_BAD_REQUEST)
+
             if Account.objects.filter(id=serializer.validated_data.get('conta_id')):
-                return Response({'conta_id': 'Conta já existente!'}, status=status.HTTP_400_BAD_REQUEST)
+                data = {'conta_id': 'Conta já existente!'}
+                set_cache(f'account_{serializer.validated_data.get("conta_id")}', data)
+                return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
             account = Account.objects.create(
                 id=serializer.validated_data.get('conta_id'),

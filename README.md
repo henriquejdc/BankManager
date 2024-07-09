@@ -91,6 +91,19 @@ além de que é facilmente integrado ao Django e possui suporte para consultar c
 **Por que usei o Docker?** Utilizei o Docker para facilitar a execução do projeto em qualquer ambiente,
 
 
+**Adicionais**
+
+Utilizado RabbitMQ para a criação de filas de mensagens para a realização de transações assíncronas.
+Utilizado Celery para a criação de tarefas assíncronas para a realização de transações.
+Utilizado Redis para a criação de cache de mensagens para a realização de transações assíncronas.
+
+
+### Run in:
+```
+http://localhost:8000/docs/
+```
+
+
 ### Docker PostgreSQL:
 ```
 You need to create .env like example_env file

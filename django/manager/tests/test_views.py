@@ -1,6 +1,7 @@
 # Base imports
 import json
 from typing import List
+from unittest.mock import patch
 
 # Django imports
 from django.urls import reverse
@@ -148,7 +149,9 @@ class TransactionViewSetTestCase(BaseAPITestCase):
         super().setUp()
         self.url = reverse("transaction-list")
 
-    def test_create_ok(self):
+    @patch('manager.tasks.transaction_account.apply_async')
+    def test_create_ok(self, mock_apply_async):
+        mock_apply_async.return_value = None
         account = baker.make(
             'manager.Account',
             balance=500,
