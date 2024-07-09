@@ -94,7 +94,9 @@ além de que é facilmente integrado ao Django e possui suporte para consultar c
 **Adicionais**
 
 Utilizado RabbitMQ para a criação de filas de mensagens para a realização de transações assíncronas.
+
 Utilizado Celery para a criação de tarefas assíncronas para a realização de transações.
+
 Utilizado Redis para a criação de cache de mensagens para a realização de transações assíncronas.
 
 
