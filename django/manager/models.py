@@ -1,5 +1,7 @@
 # Django imports
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
 
 # Project imports
@@ -53,3 +55,9 @@ class Transaction(BaseModelDate):
 
     class Meta:
         ordering = ("id",)
+
+
+@receiver(post_save, sender=Transaction, dispatch_uid="transaction_account_task")
+def transaction_account(sender, instance, **kwargs):
+    from .tasks import transaction_account
+    transaction_account.apply_async(args=[instance.id])

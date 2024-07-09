@@ -22,3 +22,29 @@ services:
     user: root
     env_file:
       - .env
+    depends_on:
+      - rabbitmq
+
+  celery:
+    build:
+      context: .
+      dockerfile: Dockerfile-sqlite
+    command: celery --app=bank_manager worker --loglevel=info
+    environment:
+      DEBUG: 1
+    env_file:
+      - .env
+    volumes:
+      - ./django:/bank_manager
+    depends_on:
+      - django
+      - rabbitmq
+
+  rabbitmq:
+    image: rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=mypass
+    ports:
+      - "5672:5672"
+      - "15672:15672"

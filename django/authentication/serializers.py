@@ -33,11 +33,14 @@ class UserCreationSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
 
-        user = User.objects.create(
-            username=validated_data['username'],
-            email=validated_data['email'],
-        )
+        try:
+            user = User.objects.create(
+                username=validated_data['username'],
+                email=validated_data['email'],
+            )
 
-        user.set_password(validated_data['password'])
-        user.save()
-        return user
+            user.set_password(validated_data['password'])
+            user.save()
+            return user
+        except Exception as e:
+            raise ValidationError(detail=e, code=status.HTTP_500_INTERNAL_SERVER_ERROR)

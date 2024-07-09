@@ -158,6 +158,10 @@ LOCALE_PATHS = [
     os.path.join(SITE_ROOT, 'i18n/rest-framework'),
 ]
 
+CELERY_TIMEZONE = "America/Sao_Paulo"
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+
 if 'test' in sys.argv or 'test_coverage' in sys.argv:  # Covers regular testing and django-coverage
     DATABASES['default']['ENGINE'] = 'django.db.backends.sqlite3'
     ENVIRONMENT_MODE = 'unit'
